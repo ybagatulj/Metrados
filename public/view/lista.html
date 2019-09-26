@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Costo Supervisión</title>
+
+	<!-- Global stylesheets -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+	<link href="../view/global_assets/css/icons/icomoon/styles.min.css" rel="stylesheet" type="text/css">
+	<link href="../view/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="../view/assets/css/bootstrap_limitless.min.css" rel="stylesheet" type="text/css">
+	<link href="../view/assets/css/layout.min.css" rel="stylesheet" type="text/css">
+	<link href="../view/assets/css/components.min.css" rel="stylesheet" type="text/css">
+	<link href="../view/assets/css/colors.min.css" rel="stylesheet" type="text/css">
+
+	<!-- /global stylesheets -->
+
+	<!-- Core JS files -->
+	<script src="../view/global_assets/js/main/jquery.min.js"></script>
+	<script src="../view/global_assets/js/main/bootstrap.bundle.min.js"></script>
+	<script src="../view/global_assets/js/plugins/loaders/blockui.min.js"></script>
+	<!-- /core JS files -->
+
+	<!-- Theme JS files -->
+	<script src="../view/assets/js/app.js"></script>
+	<script src="../view/global_assets/js/plugins/editors/ckeditor/ckeditor.js"></script>
+	<script src="../view/global_assets/js/plugins/editors/ckeditor/adapters/jquery.js"></script>
+
+	<!-- Theme JS files -->
+
+
+
+
+	<script src="../view/global_assets/js/plugins/extensions/jquery_ui/interactions.min.js"></script>
+	<script src="../view/global_assets/js/plugins/forms/selects/select2.min.js"></script>
+	<script src="../view/global_assets/js/plugins/forms/styling/uniform.min.js"></script>
+	<script src="../view/global_assets/js/plugins/forms/styling/switchery.min.js"></script>
+	<script src="../view/global_assets/js/plugins/forms/inputs/touchspin.min.js"></script>
+
+	<script src="../view/global_assets/js/demo_pages/form_select2.js"></script>
+	<script src="../view/global_assets/js/demo_pages/form_input_groups.js"></script>
+
+
+
+	<script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script type="application/javascript" src="../controler/lista.js"></script>
+
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+	<script>
+
+		var socket = io.connect();
+		var $miSuperId = "MIDD";
+		var $codProy="";
+		var $nomProy="";
+		var $resultServices="";
+
+		function NextPage(xcodigo){
+			console.log("codigo:" + xcodigo);
+			var nom = xcodigo.nombre.replace(" ","_");
+			window.location="http://localhost:8001/inicio?a="+$miSuperId+"&a="+xcodigo.codigo+"&a="+nom;
+
+		}
+		
+		window.onload = function(){
+			
+			socket.emit("busca nombre",{usuario:$miSuperId});
+			
+			socket.on("minombre",function(xdata){
+				$("#inombre").html(xdata.nombre);
+                $("#inombre2").html(xdata.nombre);
+                
+            });
+            
+			socket.on("miServicio",function(data){
+				$resultServices = data.MsgData.Transaction.CO_PROJ_INFH_WK.CO_PROJ_INFD_WK;
+			});
+
+		}
+
+		
+            
+	</script>
+
+</head>
+
+<body>
+
+	<!-- Main navbar -->
+	<div class="navbar navbar-expand-md navbar-dark">
+		<div class="navbar-brand">
+			<a href="index.html" class="d-inline-block">
+				<img src="../view/global_assets/images/logo_light.png" alt="">
+			</a>
+		</div>
+
+		<div class="d-md-none">
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">
+				<i class="icon-tree5"></i>
+			</button>
+			<button class="navbar-toggler sidebar-mobile-main-toggle" type="button">
+				<i class="icon-paragraph-justify3"></i>
+			</button>
+		</div>
+		<div class="collapse navbar-collapse" id="navbar-mobile">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item dropdown dropdown-user">
+					<a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
+						<img src="../view/global_assets/images/placeholders/placeholder.jpg" class="rounded-circle mr-2" height="34" alt="">
+						<span><div id="inombre"></div></span>
+					</a>
+					<div class="dropdown-menu dropdown-menu-right">
+						<a href="#" class="dropdown-item"><i class="icon-user-plus"></i> Mi Perfil</a>
+						<div class="dropdown-divider"></div>
+						<a href="#" class="dropdown-item"><i class="icon-cog5"></i>Configuración</a>
+						<a href="#" class="dropdown-item"><i class="icon-switch2"></i>Salir</a>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<!-- /main navbar -->
+
+
+	<!-- Page content -->
+	<div class="page-content">
+
+		<!-- Main sidebar -->
+		
+		<!-- /main sidebar -->
+
+
+		<!-- Main content -->
+		<div class="content-wrapper">
+
+			<!-- Page header -->
+			<div class="page-header page-header-light">
+				<div class="page-header-content header-elements-md-inline">
+					<div class="page-title d-flex">
+						<div class="form-group row">
+							<label class="col-form-label col-lg-2">Buscar&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
+							<div class="col-lg-10">
+								<div class="input-group">
+									<input id="tbuscar" class="form-control border-right-0" type="text"  placeholder="Ingrese el texto" >
+									<span class="input-group-append">
+										<button  id="bbuscar" onclick="Bbuscar()" type="button" class="btn btn-primary">Ok</button>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-form-label col-lg-2">&nbsp&nbspFiltrar&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
+							<div class="col-lg-10">
+								<select id="unidadesN" onchange="UnidadesSelect()" class="form-control select-fixed-single border-primary-300" data-fouc>
+									<option value="0">Todas las unidades</option>
+									<option value="UNINF" >UN Infraestructura</option>
+									<option value="UNPLT">UN Plantas industriales</option>
+									<option value="UNING">UN Ingeniería</option>
+									<option value="UNDNE">UN Edificaciones</option>
+									<option value="UNMIN">UN Minería</option>
+									<option value="UNEYT">UN Equipos y Transportes</option>	
+								</select>
+							</div>
+						</div>
+						<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+					</div>
+					<div class="header-elements d-none">
+						<div class="d-flex justify-content-center">
+							<a href="#" class="btn btn-link btn-float text-default"><i class="icon-plus-circle2"></i><span>Administrar</span></a>
+						</div>
+					</div>
+				</div>
+				<div class="page-header-content header-elements-md-inline">
+						<div class="page-title d-flex">
+							<center>
+								<button id="btodos" type="button" class="btn btn-primary" data-toggle="button">TODOS</button>
+                            	<button id="bactivos" type="button" class="btn btn-primary" data-toggle="button">ACTIVOS</button>
+                           		<button id="binactivos" type="button" class="btn btn-primary" data-toggle="button">INACTIVOS</button>
+							</center>
+						</div>
+	
+				</div>
+			</div>
+			<!-- /page header -->
+
+
+			<!-- Content area -->
+			<div class="content">
+				<div class="card">
+					<div class="card-header header-elements-inline">
+						<h5 class="card-title">LISTA CR ACTIVOS</h5>
+					</div>
+
+					<div class="card-body">
+						<div id="mgif">
+							<center><img src="../view/gif.gif"></center>
+						</div>
+						<div class="row" id="contenidop1">
+							
+	
+						</div>
+					</div>	
+				</div>
+			</div>
+			<!-- /content area -->
+
+
+			<!-- Footer -->
+			<div class="navbar navbar-expand-lg navbar-light">
+				<div class="text-center d-lg-none w-100">
+					<button type="button" class="navbar-toggler dropdown-toggle" data-toggle="collapse" data-target="#navbar-footer">
+						<i class="icon-unfold mr-2"></i>
+						Footer
+					</button>
+				</div>
+
+				<div class="navbar-collapse collapse" id="navbar-footer">
+					<span class="navbar-text">
+						&copy; 2015 - 2018. <a href="#">Limitless Web App Kit</a> by <a href="http://themeforest.net/user/Kopyov" target="_blank">Eugene Kopyov</a>
+					</span>
+
+					<ul class="navbar-nav ml-lg-auto">
+						<li class="nav-item"><a href="https://kopyov.ticksy.com/" class="navbar-nav-link" target="_blank"><i class="icon-lifebuoy mr-2"></i> Support</a></li>
+						<li class="nav-item"><a href="http://demo.interface.club/limitless/docs/" class="navbar-nav-link" target="_blank"><i class="icon-file-text2 mr-2"></i> Docs</a></li>
+						<li class="nav-item"><a href="https://themeforest.net/item/limitless-responsive-web-application-kit/13080328?ref=kopyov" class="navbar-nav-link font-weight-semibold"><span class="text-pink-400"><i class="icon-cart2 mr-2"></i> Purchase</span></a></li>
+					</ul>
+				</div>
+			</div>
+			<!-- /footer -->
+
+		</div>
+		<!-- /main content -->
+
+	</div>
+	<!-- /page content -->
+
+</body>
+</html>
